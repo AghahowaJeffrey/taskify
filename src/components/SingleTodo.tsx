@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Todos } from '../Model'
 import { AiFillDelete, AiFillEdit } from 'react-icons/ai'
 import { MdDone } from 'react-icons/md'
@@ -13,6 +13,7 @@ export const SingleTodo = ({ todo, todos, setTodos }: Props) => {
 
     const [edit, setEdit] = useState<boolean>(false)
     const [editTodo, setEditTodo] = useState<string>(todo.todo)
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleDone = (id: number) => {
         setTodos(
@@ -32,7 +33,11 @@ export const SingleTodo = ({ todo, todos, setTodos }: Props) => {
         setTodos(todos.map((todo) => (
             todo.id === id ? {...todo, todo:editTodo}: todo
         )));
-        setEdit(false)
+        setEdit(false);
+
+        useEffect(() => {
+            inputRef.current?.focus();
+        }, [edit])
 
     };
 
@@ -40,7 +45,9 @@ export const SingleTodo = ({ todo, todos, setTodos }: Props) => {
      <>
      <form onSubmit={(e) => handleEdit(e, todo.id)}>
         {edit ? (
-            <input value={editTodo}
+            <input 
+            ref={inputRef}
+            value={editTodo}
             onChange={(e) => setEditTodo(e.target.value)} />
         ): todo.isDone ? (
             <s>{todo.todo}</s>
