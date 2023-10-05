@@ -1,4 +1,5 @@
 import React from 'react'
+import SingleTodo from './SingleTodo'
 import { Todos } from '../Model'
 
 interface Props {
@@ -9,9 +10,11 @@ interface Props {
 const TodoList = ({todos, setTodos}: Props) => {
   return (
     <>
-    {todos.map((t) => {
-        <li>{t.todo}</li>
-    })}
+        {todos.map((todo) => (
+        <SingleTodo key={todo.id} 
+        todo={todo} 
+        todos={todos} 
+        setTodos={setTodos} />))}
     </>
   )
 }
